@@ -4,7 +4,7 @@ import sys
 def encode(string):
     ostr = ""
     for c in string:
-        ostr += hex(ord(c)) + " "
+        ostr += hex(ord(c))[2:] + " "
     return ostr.rstrip()
 
 def decode(string):
@@ -26,7 +26,7 @@ def run():
     ifname = a.infile
     ofname = a.outfile
 
-    with open(ifname, "rt") as ifile:
+    with open(ifname, "rt", newline=None) as ifile:
         istr = ifile.read()
         ostr = None
 
@@ -40,3 +40,5 @@ def run():
                 ofile.write(ostr)
         else:
             print(ostr)
+
+run()
