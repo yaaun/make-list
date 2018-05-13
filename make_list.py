@@ -14,7 +14,7 @@ def make(file, lineLength=72, separator="\t"):
         else:
             line.split
             # This is a data line -- extract it.
-            
+
 
     # Now use the CSV parser.
 #    reader = csv.reader(dataLines, csv.excel_tab, delimiter=separator)
@@ -54,7 +54,7 @@ def run():
         dest="separatorCode", help="the Unicode code point of the column " +
         "separator character (default=" + str(ord("\t")) + " (TAB))")
     argparser.add_argument("filename", type=str, nargs=1)
-    argparser.add_argument("outfile", type=str, nargs="?", default="STDOUT")
+    argparser.add_argument("outfile", type=str, nargs="?", default=None)
 
     args = argparser.parse_args()
     fname = args.filename[0]
@@ -65,7 +65,7 @@ def run():
     with open(fname, "rt") as file:
         outLines = make(file)
 
-    if oname != "STDOUT":
+    if oname != None:
         with open(oname, "wt", newline="\r\n") as file:
             for line in outLines:
                 file.write(line + "\n")
