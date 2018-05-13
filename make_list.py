@@ -1,4 +1,5 @@
 import argparse
+import re
 
 
 def make(file, lineLength=72, separator="\t"):
@@ -7,14 +8,14 @@ def make(file, lineLength=72, separator="\t"):
 
     for line in file:
         if line.startswith("#"):
-            pass
-            # This is a comment, skip over it.
+            pass # This is a comment, skip over it.
         elif line.startswith("<--"): # This is a section title, print as-is.
-
+            outLines.append(line)
         else:
-            line.split
+            cols = re.split(r"\t+", line)
             # This is a data line -- extract it.
-
+            if len(cols) == 2:
+                pass
 
     # Now use the CSV parser.
 #    reader = csv.reader(dataLines, csv.excel_tab, delimiter=separator)
