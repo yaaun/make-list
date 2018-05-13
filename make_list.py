@@ -12,10 +12,25 @@ def make(file, lineLength=72, separator="\t"):
         elif line.startswith("<--"): # This is a section title, print as-is.
             outLines.append(line)
         else:
-            cols = re.split(r"\t+", line)
-            # This is a data line -- extract it.
-            if len(cols) == 2:
-                pass
+            cols = re.split(r"\t+", line) # This is a data line -- extract it.
+
+            if len(cols) >= 2:
+                itemName = cols[0]
+                expCount = int(cols[1])
+                extra = ""
+
+                if len(cols) >= 3:
+                    extra = " " + cols[2]
+
+                padLen = lineLength - 6 - 20 - len(itemName)
+                padding = " " * padLen
+
+                if padLen < 1:
+                    truncLen = lineLength - 6 - 20 - 1
+                    padding = " "
+                    itemName = itemName[:truncLen]
+
+                outLines.append("    \u2022 " + itemName + padding + "____/____  {  } [  ]" + extra)
 
     # Now use the CSV parser.
 #    reader = csv.reader(dataLines, csv.excel_tab, delimiter=separator)
@@ -54,12 +69,12 @@ def run():
     argparser.add_argument("--separator-code", type=int, default=ord("\t"),
         dest="separatorCode", help="the Unicode code point of the column " +
         "separator character (default=" + str(ord("\t")) + " (TAB))")
-    argparser.add_argument("filename", type=str, nargs=1)
+    argparser.add_argument("filename", type=str)
     argparser.add_argument("outfile", type=str, nargs="?", default=None)
 
     args = argparser.parse_args()
-    fname = args.filename[0]
-    oname = args.outfile[0]
+    fname = args.filename
+    oname = args.outfile
 
     outLines = None
 
@@ -70,7 +85,7 @@ def run():
         with open(oname, "wt", newline="\r\n") as file:
             for line in outLines:
                 file.write(line + "\n")
-                print(line)
+                #print(line)
     else:
         for line in outLines:
             print(line)
